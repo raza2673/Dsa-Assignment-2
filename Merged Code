@@ -1,0 +1,149 @@
+#include <iostream>
+using namespace std;
+
+const int SIZE = 100;
+
+struct PrintJob
+{
+    int jobId;
+    int pages;
+};
+
+class Queue
+{
+private:
+    PrintJob jobs[SIZE];
+    int front;
+    int rear;
+
+public:
+    Queue()
+    {
+        front = -1;
+        rear = -1;
+    }
+
+    bool isEmpty()
+    {
+        return (front == -1 || front > rear);
+    }
+
+    void enqueue(int jobId, int pages)
+    {
+        if (rear == SIZE - 1)
+        {
+            cout << "Queue Overflow!" << endl;
+            return;
+        }
+
+        if (front == -1)
+            front = 0;
+
+        rear++;
+        jobs[rear].jobId = jobId;
+        jobs[rear].pages = pages;
+
+        cout << "Job Added -> ID: " << jobId
+             << ", Pages: " << pages << endl;
+    }
+
+    void dequeue()
+    {
+        if (isEmpty())
+        {
+            cout << "Queue Underflow! No jobs to print." << endl;
+            return;
+        }
+
+        cout << "Printing Job -> ID: "
+             << jobs[front].jobId
+             << ", Pages: "
+             << jobs[front].pages << endl;
+
+        front++;
+    }
+
+    void peek()
+    {
+        if (isEmpty())
+        {
+            cout << "Queue is Empty!" << endl;
+            return;
+        }
+
+        cout << "Next Job -> ID: "
+             << jobs[front].jobId
+             << ", Pages: "
+             << jobs[front].pages << endl;
+    }
+
+    void display()
+    {
+        if (isEmpty())
+        {
+            cout << "No Pending Jobs!" << endl;
+            return;
+        }
+
+        cout << "\nPending Print Jobs:\n";
+
+        for (int i = front; i <= rear; i++)
+        {
+            cout << "Job ID: " << jobs[i].jobId
+                 << ", Pages: " << jobs[i].pages << endl;
+        }
+    }
+
+    void totalPages()
+    {
+        if (isEmpty())
+        {
+            cout << "Total Pending Pages: 0" << endl;
+            return;
+        }
+
+        int total = 0;
+
+        for (int i = front; i <= rear; i++)
+        {
+            total += jobs[i].pages;
+        }
+
+        cout << "Total Pending Pages: " << total << endl;
+    }
+};
+
+int main()
+{
+    Queue printerQueue;
+
+    // Insert print jobs
+    printerQueue.enqueue(101, 5);
+    printerQueue.enqueue(102, 12);
+    printerQueue.enqueue(103, 3);
+    printerQueue.enqueue(104, 8);
+    printerQueue.enqueue(105, 6);
+
+    // 1. Display all jobs
+    cout << "\n--- Display All Jobs ---\n";
+    printerQueue.display();
+
+    // 2. Print/remove two jobs
+    cout << "\n--- Print Two Jobs ---\n";
+    printerQueue.dequeue();
+    printerQueue.dequeue();
+
+    // 3. Display next job
+    cout << "\n--- Next Job ---\n";
+    printerQueue.peek();
+
+    // 4. Display remaining jobs
+    cout << "\n--- Remaining Jobs ---\n";
+    printerQueue.display();
+
+    // 5. Display total pending pages
+    cout << "\n--- Total Pending Pages ---\n";
+    printerQueue.totalPages();
+
+    return 0;
+}
