@@ -1,0 +1,92 @@
+#include <iostream>
+using namespace std;
+
+const int SIZE = 100;
+
+struct PrintJob
+{
+    int jobId;
+    int pages;
+};
+
+class Queue
+{
+private:
+    PrintJob jobs[SIZE];
+    int front;
+    int rear;
+
+public:
+    Queue()
+    {
+        front = 0;
+        rear = 4;
+
+        jobs[0] = {101, 5};
+        jobs[1] = {102, 12};
+        jobs[2] = {103, 3};
+        jobs[3] = {104, 8};
+        jobs[4] = {105, 6};
+    }
+
+    bool isEmpty()
+    {
+        return (front > rear);
+    }
+
+    void dequeue()
+    {
+        if (isEmpty())
+        {
+            cout << "Queue Underflow!" << endl;
+            return;
+        }
+
+        cout << "Printing Job -> ID: "
+             << jobs[front].jobId
+             << ", Pages: "
+             << jobs[front].pages << endl;
+
+        front++;
+    }
+
+    void peek()
+    {
+        if (isEmpty())
+        {
+            cout << "Queue is Empty!" << endl;
+            return;
+        }
+
+        cout << "Next Job -> ID: "
+             << jobs[front].jobId
+             << ", Pages: "
+             << jobs[front].pages << endl;
+    }
+
+    void totalPages()
+    {
+        int total = 0;
+
+        for (int i = front; i <= rear; i++)
+        {
+            total += jobs[i].pages;
+        }
+
+        cout << "Total Pending Pages: " << total << endl;
+    }
+};
+
+int main()
+{
+    Queue printerQueue;
+
+    printerQueue.dequeue();
+    printerQueue.dequeue();
+
+    printerQueue.peek();
+
+    printerQueue.totalPages();
+
+    return 0;
+}
